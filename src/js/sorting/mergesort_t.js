@@ -3,15 +3,19 @@ const mergeSort = (array) => {
         throw Error(`${array} must be an array.`);
     }
 
-    if (array.length === 1) {
+    let endValues = [];
+
+    if (array.length > 1) {
+        const leftValue = array[0];
+        const rightValue = array[array.length - 1];
+
+        endValues.push(leftValue < rightValue ? leftValue : rightValue);
+        endValues.push(rightValue > leftValue ? rightValue : leftValue);
+    } else {
         return array;
     }
 
-    const splitIndex = Math.floor(array.length / 2);
-    const leftHalf = array.slice(0, splitIndex);
-    const rightHalf = array.slice(splitIndex);
-
-    return merge(mergeSort(leftHalf), mergeSort(rightHalf));
+    return merge(endValues, mergeSort(array.slice(1, array.length - 1)));
 };
 
 const merge = (leftArray, rightArray) => {
