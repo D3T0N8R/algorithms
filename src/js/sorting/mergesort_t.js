@@ -3,24 +3,15 @@ const mergeSort = (array) => {
         throw Error(`${array} must be an array.`);
     }
 
-    let endValues = [];
-
-    if (array.length > 1) {
-        const leftValue = array[0];
-        const rightValue = array[array.length - 1];
-
-        endValues.push(leftValue < rightValue ? leftValue : rightValue);
-        endValues.push(rightValue > leftValue ? rightValue : leftValue);
-    } else {
+    if (array.length < 2) {
         return array;
     }
 
-    return merge(endValues, mergeSort(array.slice(1, array.length - 1)));
-};
-
-const merge = (leftArray, rightArray) => {
+    const start = array[0];
+    const end = array[1];
+    const leftArray = [start < end ? start : end, start < end ? end : start];
+    const rightArray = mergeSort(array.slice(2));
     let mergedArray = [];
-    let remainingValues = [];
     let leftIndex = 0;
     let rightIndex = 0;
 
@@ -38,17 +29,14 @@ const merge = (leftArray, rightArray) => {
     }
 
     if (leftIndex < leftArray.length) {
-        remainingValues = leftArray.slice(leftIndex);
+        return mergedArray.concat(leftArray.slice(leftIndex));
     } else {
-        remainingValues = rightArray.slice(rightIndex);
+        return mergedArray.concat(rightArray.slice(rightIndex));
     }
-
-    return mergedArray.concat(remainingValues);
 };
 
+let unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
+console.log(`before sorting: ${unsortedArray}`);
 
-const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
 const sortedArray = mergeSort(unsortedArray);
-
-console.log(unsortedArray);
-console.log(sortedArray);
+console.log(`after sorting: ${sortedArray}`);

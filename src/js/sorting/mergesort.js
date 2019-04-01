@@ -8,15 +8,9 @@ const mergeSort = (array) => {
     }
 
     const splitIndex = Math.floor(array.length / 2);
-    const leftHalf = array.slice(0, splitIndex);
-    const rightHalf = array.slice(splitIndex);
-
-    return merge(mergeSort(leftHalf), mergeSort(rightHalf));
-};
-
-const merge = (leftArray, rightArray) => {
+    const leftArray = mergeSort(array.slice(0, splitIndex));
+    const rightArray = mergeSort(array.slice(splitIndex));
     let mergedArray = [];
-    let remainingValues = [];
     let leftIndex = 0;
     let rightIndex = 0;
 
@@ -34,17 +28,14 @@ const merge = (leftArray, rightArray) => {
     }
 
     if (leftIndex < leftArray.length) {
-        remainingValues = leftArray.slice(leftIndex);
+        return mergedArray.concat(leftArray.slice(leftIndex));
     } else {
-        remainingValues = rightArray.slice(rightIndex);
+        return mergedArray.concat(rightArray.slice(rightIndex));
     }
-
-    return mergedArray.concat(remainingValues);
 };
 
-
 const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
-const sortedArray = mergeSort(unsortedArray);
+console.log(`before sorting: ${unsortedArray}`);
 
-console.log(unsortedArray);
-console.log(sortedArray);
+const sortedArray = mergeSort(unsortedArray);
+console.log(`after sorting: ${sortedArray}`);
