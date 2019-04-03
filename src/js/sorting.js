@@ -42,11 +42,8 @@ function Sorting() {
             }
         }
     
-        if (leftIndex < leftArray.length) {
-            return mergedArray.concat(leftArray.slice(leftIndex));
-        } else {
-            return mergedArray.concat(rightArray.slice(rightIndex));
-        }
+        // concatenate the higher values with the lower values
+        return mergedArray.concat(leftIndex < leftArray.length ? leftArray.slice(leftIndex) : rightArray.slice(rightIndex))
     };
 
     const _quickSort = (startIndex, endIndex, array, comparator) => {
@@ -59,20 +56,22 @@ function Sorting() {
 
         for (let index = startIndex; index < endIndex; index++) {
             if (comparator(array[index], pivotValue) === -1) {
-                if (index !== position) {
-                    const positionValue = array[position];
-                    array[position] = array[index];
-                    array[index] = positionValue;
-                }
-
+                // swap the lower value with the value at the current position
+                const positionValue = array[position];
+                array[position] = array[index];
+                array[index] = positionValue;
                 position++;
             }
         }
 
+        // swap the value of the current position with the pivot value
         array[endIndex] = array[position];
         array[position] = pivotValue;
 
+        // sort the items less than the pivot value
         _quickSort(startIndex, position - 1, array, comparator);
+        
+        // sort the items greater than, or equal to, the pivot value
         _quickSort(position + 1, endIndex, array, comparator);
 
         return array;
@@ -86,9 +85,19 @@ function Sorting() {
 const sorting = new Sorting();
 const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
 
+Array.prototype.mergeSort = function() {
+    return new Sorting().mergeSort(this);
+};
+
 console.log(`before merge sorting: ${unsortedArray}`);
 const mergeSortedArray = sorting.mergeSort(unsortedArray);
 console.log(`after merge sorting: ${mergeSortedArray}`);
+
+console.log('');
+
+console.log(`before array merge sorting: ${unsortedArray}`);
+const arrayPrototypeMergeSortedArray = unsortedArray.mergeSort();
+console.log(`after array merge sorting: ${arrayPrototypeMergeSortedArray}`);
 
 console.log('');
 
