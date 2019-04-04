@@ -1,3 +1,5 @@
+'use strict';
+
 function Sorting() {
     Sorting.prototype = Object.create(Object.prototype);
 
@@ -113,14 +115,14 @@ function Sorting() {
 const sortTest = (sortFunction, functionName, mutate = false) => {
     const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
     const postFix = mutate ? ' with array mutation' : '';
-    const arguments = [unsortedArray];
+    const functionArguments = [unsortedArray];
 
     if (mutate) {
-        arguments.push(true);
+        functionArguments.push(true);
     }
 
     console.log(`before ${functionName}${postFix}: ${unsortedArray}`);
-    const sortedArray = sortFunction(...arguments);
+    const sortedArray = sortFunction(...functionArguments);
     console.log(`after ${functionName}${postFix}: ${sortedArray}`);
     console.log(`original array after ${functionName}${postFix}: ${unsortedArray}`);
     console.log('');
