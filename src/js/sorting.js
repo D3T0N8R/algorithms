@@ -13,10 +13,14 @@ function Sorting() {
         return 0;
     };
 
-    this.mergeSort = (array, comparator = _comparator) => {
+    const _validateArray = (array) => {
         if (!Array.isArray(array)) {
             throw Error(`${array} must be an array.`);
         }
+    };
+
+    this.mergeSort = (array, comparator = _comparator) => {
+        _validateArray(array);
     
         if (array.length === 1) {
             return array;
@@ -78,10 +82,12 @@ function Sorting() {
     };
 
     this.quickSort = (array, mutate = false, comparator = _comparator) => {
+        _validateArray(array);
         return _quickSort(0, array.length - 1, mutate ? array : [...array], comparator);
     };
 
     this.bubbleSort = (array, mutate = false, comparator = _comparator) => {
+        _validateArray(array);
         const sortedArray = mutate ? array : [...array];
         let valueSwapped = false;
 
