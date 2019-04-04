@@ -80,34 +80,55 @@ function Sorting() {
     this.quickSort = (array, mutate = false, comparator = _comparator) => {
         return _quickSort(0, array.length - 1, mutate ? array : [...array], comparator);
     };
+
+    this.bubbleSort = (array, mutate = false, comparator = _comparator) => {
+        const sortedArray = mutate ? array : [...array];
+        let valueSwapped = false;
+
+        do {
+            valueSwapped = false;
+
+            for (let index = 0; index < sortedArray.length - 1; index++) {
+                let leftValue = sortedArray[index];
+                let rightValue = sortedArray[index + 1];
+
+                if (comparator(leftValue, rightValue) === 1) {
+                    sortedArray[index] = rightValue;
+                    sortedArray[index + 1] = leftValue;
+                    valueSwapped = true;
+                }
+            }
+        } while(valueSwapped);
+
+        return sortedArray;
+    };
+};
+
+const sortTest = (sortFunction, functionName, mutate = false) => {
+    const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
+    const postFix = mutate ? ' with array mutation' : '';
+    const arguments = [unsortedArray];
+
+    if (mutate) {
+        arguments.push(true);
+    }
+
+    console.log(`before ${functionName}${postFix}: ${unsortedArray}`);
+    const sortedArray = sortFunction(...arguments);
+    console.log(`after ${functionName}${postFix}: ${sortedArray}`);
+    console.log(`original array after ${functionName}${postFix}: ${unsortedArray}`);
+    console.log('');
 };
 
 const sorting = new Sorting();
-const unsortedArray = [9, 1, 8, 2, 7, 3, 6, 4, 5];
+sortTest(sorting.mergeSort, 'merge sort');
+sortTest(sorting.quickSort, 'quick sort');
+sortTest(sorting.quickSort, 'quick sort', true);
+sortTest(sorting.bubbleSort, 'bubble sort');
+sortTest(sorting.bubbleSort, 'bubble sort', true);
 
 Array.prototype.mergeSort = function() {
     return new Sorting().mergeSort(this);
 };
 
-console.log(`before merge sorting: ${unsortedArray}`);
-const mergeSortedArray = sorting.mergeSort(unsortedArray);
-console.log(`after merge sorting: ${mergeSortedArray}`);
-
-console.log('');
-
-console.log(`before array merge sorting: ${unsortedArray}`);
-const arrayPrototypeMergeSortedArray = unsortedArray.mergeSort();
-console.log(`after array merge sorting: ${arrayPrototypeMergeSortedArray}`);
-
-console.log('');
-
-console.log(`before quick sorting: ${unsortedArray}`);
-const quickSortedArray = sorting.quickSort(unsortedArray);
-console.log(`after quick sorting: ${quickSortedArray}`);
-
-console.log('');
-
-console.log(`before quick sorting with array mutation: ${unsortedArray}`);
-const quickSortedMutatedArray = sorting.quickSort(unsortedArray, true);
-console.log(`after quick sorting with array mutation: ${quickSortedMutatedArray}`);
-console.log(`original array after quick sorting with array mutation: ${unsortedArray}`);
+console.log([9, 1, 8, 2, 7, 3, 6, 4, 5].mergeSort());
